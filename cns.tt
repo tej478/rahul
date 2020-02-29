@@ -1,0 +1,584 @@
+#week1
+
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+1. XOR a string with a Zero
+AIM: Write a C program that contains a string (char pointer) with a value \Hello
+World’. The program should XOR each character in this string with 0 and display the
+result.
+PROGRAM:
+#include<stdio.h>
+int main()
+{
+char* source="Hello World";
+char destination;
+printf("%s\n",source);
+while(*source)
+{
+destination= *source ^ '0';
+printf("%c",destination);
+source++;
+}
+return 0;
+}
+Output:
+Hello World
+xU\\_#g_B\T
+#week2
+2. XOR a string with a 127
+AIM: Write a C program that contains a string (char pointer) with a value \Hello
+World’. The program should AND or and XOR each character in this string with 127
+and display the result.
+PROGRAM:
+a)AND
+#include<stdio.h>
+int main()
+{
+char* source="Hello World";
+char destination;
+printf("%s\n",source);
+while(*source)
+{
+destination= *source & '127';
+printf("%c",destination);
+source++;
+}
+return 0;
+}
+Output:
+Hello World
+%$$' #'2$$
+SPEC,HYD Page 17
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+2b)OR
+Program:
+#include<stdio.h>
+int main()
+{
+char* source="Hello World";
+char destination;
+printf("%s\n",source);
+while(*source)
+{
+destination= *source | '127';
+printf("%c ",destination);
+source++;
+}
+return 0;
+}
+output:
+Hello World
+ w    7 w  w  w
+2c)XOR:
+Program:
+#include<stdio.h>
+int main()
+{
+SPEC,HYD Page 18
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+char* source="Hello World";
+char destination;
+printf("%s\n",source);
+while(*source)
+{
+destination= *source ^ (char)127 ;
+printf("%c ",destination);
+source++;
+}
+return 0;
+}
+output:
+Hello World
+ # #
+3. Encryption & Decryption using Cipher Algorithms
+AIM: Write a Java program to perform encryption and decryption using the following
+algorithms:
+a) Ceaser Cipher
+b) Substitution Cipher
+c) Hill Cipher
+PROGRAM:
+SPEC,HYD Page 19
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+a) Ceaser Cipher
+Program:
+ import java.util.Scanner;
+ public class Ceasercipher
+ {
+ public static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+ public static String encrypt(String plainText, int shiftKey)
+ {
+ plainText = plainText.toLowerCase();
+ String cipherText = "";
+ for (int i = 0; i < plainText.length(); i++)
+ {
+ int charPosition = ALPHABET.indexOf(plainText.charAt(i));
+ int keyVal = (shiftKey + charPosition) % 26;
+ char replaceVal = ALPHABET.charAt(keyVal);
+ cipherText += replaceVal;
+ }
+ return cipherText;
+ }
+ public static String decrypt(String cipherText, int shiftKey)
+ {
+ cipherText = cipherText.toLowerCase();
+ String plainText = "";
+ for (int i = 0; i < cipherText.length(); i++)
+ {
+SPEC,HYD Page 20
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+ int charPosition = ALPHABET.indexOf(cipherText.charAt(i));
+ int keyVal = (charPosition - shiftKey) % 26;
+ if (keyVal < 0)
+ {
+ keyVal = ALPHABET.length() + keyVal;
+ }
+ char replaceVal = ALPHABET.charAt(keyVal);
+ plainText += replaceVal;
+ }
+ return plainText;
+ }
+ public static void main(String[] args)
+ {
+ Scanner sc = new Scanner(System.in);
+ System.out.println("Enter the String for Encryption: ");
+ String message = new String();
+ message = sc.next();
+ System.out.println(encrypt(message, 6));
+ System.out.println(decrypt(encrypt(message, 3), 3));
+ sc.close();
+ }
+ }
+output:
+Caesar
+igkugx
+caesar
+SPEC,HYD Page 21
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+b) Substitution Cipher
+PROGRAM:
+import java.util.Scanner;
+public class substitutionCipher{
+public static void main(String[] args) {
+Scanner sc=new Scanner(System.in);
+// TODO Auto-generated method stub
+String a="abcdefghijklmnopqrstuvwxyz";
+String b="zyxwvutsrqponmlkjihgfedcba";
+String text=sc.nextLine();
+String encrypted="";
+String decrypted="";
+for(int i=0;i<text.length();i++)
+encrypted=encrypted+b.charAt(a.indexOf(text.charAt(i)));
+System.out.println("the encrpytion is:"+encrypted);
+for(int i=0;i<text.length();i++)
+decrypted= decrypted+a.charAt(b.indexOf(encrypted.charAt(i)));
+System.out.println("the decryptred is:"+decrypted);
+}
+}
+Output:
+SPEC,HYD Page 22
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+hello
+the encrpytion is:svool
+the decryptred is:hello
+SPEC,HYD Page 23
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+c) Hill Cipher PROGRAM:
+import java.io.*;
+import java.util.*;
+//import java.io.*;
+public class Hillcipher {
+static float[][] decrypt = new float[3][1];
+static float[][] a = new float[3][3];
+ static float[][] b = new float[3][3];
+static float[][] mes = new float[3][1];
+ static float[][] res = new float[3][1];
+static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+static Scanner sc = new Scanner(System.in);
+public static void main(String[] args) throws IOException {
+getkeymes();
+for(int i=0;i<3;i++)
+for(int j=0;j<1;j++)
+for(int k=0;k<3;k++)
+{
+res[i][j]=res[i][j]+a[i][k]*mes[k][j];
+ }
+System.out.print("\nEncrypted string is :");
+for(int i=0;i<3;i++)
+SPEC,HYD Page 24
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+{
+System.out.print((char)(res[i][0]%26+97));
+}
+inverse();
+for(int i=0;i<3;i++)
+for(int j=0;j<1;j++)
+for(int k=0;k<3;k++)
+{
+decrypt[i][j] = decrypt[i][j]+b[i][k]*res[k][j];
+ }
+System.out.print("\nDecrypted string is : ");
+for(int i=0;i<3;i++)
+{
+System.out.print((char)(decrypt[i][0]%26+97));
+}
+System.out.print("\n");
+}
+public static void getkeymes() throws IOException
+{
+System.out.println("Enter 3x3 matrix for key (It should be inversible): ");
+for(int i=0;i<3;i++)
+for(int j=0;j<3;j++)
+a[i][j] = sc.nextFloat();
+SPEC,HYD Page 25
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+System.out.print("\nEnter a 3 letter string: ");
+String msg = br.readLine();
+for(int i=0;i<3;i++)
+mes[i][0] = msg.charAt(i)-97;
+}
+public static void inverse() {
+float p,q;
+float[][] c = a;
+for(int i=0;i<3;i++)
+for(int j=0;j<3;j++) {
+//a[i][j]=sc.nextFloat();
+if(i==j)
+b[i][j]=1;
+else b[i][j]=0;
+}
+for(int k=0;k<3;k++) {
+for(int i=0;i<3;i++) {
+p = c[i][k];
+q = c[k][k];
+for(int j=0;j<3;j++) {
+if(i!=k)
+ {
+c[i][j] = c[i][j]*q-p*c[k][j];
+b[i][j] = b[i][j]*q-p*b[k][j];
+SPEC,HYD Page 26
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+}
+}
+}
+}
+for(int i=0;i<3;i++)
+for(int j=0;j<3;j++)
+{
+b[i][j] = b[i][j]/c[i][i];
+}
+System.out.println("");
+System.out.println("\nInverse Matrix is : ");
+for(int i=0;i<3;i++)
+{
+for(int j=0;j<3;j++)
+System.out.print(b[i][j] + " ");
+System.out.print("\n");
+}
+}
+ }
+Output:
+Enter 3x3 matrix for key (It should be inversible):
+6 4 5
+8 9 3
+5 4 2
+SPEC,HYD Page 27
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+Enter a 3 letter string: hai
+Encrypted string is :ecz
+Inverse Matrix is :
+-0.18181819 -0.36363637 1.0
+0.030303031 0.3939394 -0.6666667
+0.3939394 0.121212125 -0.6666667
+Decrypted string is : hai
+Decrypted string is: hai
+4. Java program for DES algorithm logic
+AIM: Write a Java program to implement the DES algorithm logic.
+PROGRAM:
+import javax.swing.*;
+import java.security.SecureRandom;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Random ;
+class DES {
+SPEC,HYD Page 28
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+byte[] skey = new byte[1000];
+String skeyString;
+static byte[] raw;
+String inputMessage,encryptedData,decryptedMessage;
+public DES() {
+try {
+generateSymmetricKey();
+inputMessage=JOptionPane.showInputDialog(null,"Enter message to encrypt");
+byte[] ibyte = inputMessage.getBytes();
+byte[] ebyte=encrypt(raw, ibyte);
+String encryptedData = new String(ebyte);
+System.out.println("Encrypted message "+encryptedData);
+JOptionPane.showMessageDialog(null,"Encrypted Data "+"\n"+encryptedData);
+byte[] dbyte= decrypt(raw,ebyte);
+String decryptedMessage = new String(dbyte);
+System.out.println("Decrypted message "+decryptedMessage);
+JOptionPane.showMessageDialog(null,"Decrypted Data "+"\n"+decryptedMessage);
+}
+catch(Exception e) {
+System.out.println(e);
+}
+SPEC,HYD Page 29
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+}
+void generateSymmetricKey() {
+try {
+Random r = new Random();
+int num = r.nextInt(10000);
+String knum = String.valueOf(num);
+byte[] knumb = knum.getBytes();
+skey=getRawKey(knumb);
+skeyString = new String(skey);
+System.out.println("DES Symmetric key = "+skeyString);
+}
+catch(Exception e) {
+System.out.println(e);
+}
+}
+private static byte[] getRawKey(byte[] seed) throws Exception {
+KeyGenerator kgen = KeyGenerator.getInstance("DES");
+SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+sr.setSeed(seed);
+kgen.init(56, sr);
+SecretKey skey = kgen.generateKey();
+raw = skey.getEncoded();
+return raw;
+SPEC,HYD Page 30
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+}
+private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
+SecretKeySpec skeySpec = new SecretKeySpec(raw, "DES");
+Cipher cipher = Cipher.getInstance("DES");
+cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+byte[] encrypted = cipher.doFinal(clear);
+return encrypted;
+}
+private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
+SecretKeySpec skeySpec = new SecretKeySpec(raw, "DES");
+Cipher cipher = Cipher.getInstance("DES");
+cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+byte[] decrypted = cipher.doFinal(encrypted);
+return decrypted;
+}
+public static void main(String args[]) {
+DES des = new DES();
+}
+}
+
+output:
+SPEC,HYD Page 31
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+
+
+DES Symmetric key = ,��7p�=�
+Encrypted message ,��Vq��R�.��
+Decrypted message hello world
+5. Program to implement BlowFish algorithm logic
+AIM: Write a C/JAVA program to implement the BlowFish algorithm logic.
+PROGRAM:
+SPEC,HYD Page 32
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+import javax.swing.*;
+import java.security.SecureRandom;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Random ;
+class Blowfish {
+byte[] skey = new byte[1000];
+String skeyString;
+static byte[] raw;
+String inputMessage,encryptedData,decryptedMessage;
+public Blowfish() {
+try {
+generateSymmetricKey();
+inputMessage=JOptionPane.showInputDialog(null,"Enter message to encrypt");
+byte[] ibyte = inputMessage.getBytes();
+byte[] ebyte=encrypt(raw, ibyte);
+String encryptedData = new String(ebyte);
+System.out.println("Encrypted message "+encryptedData);
+JOptionPane.showMessageDialog(null,"Encrypted Data "+"\n"+encryptedData);
+byte[] dbyte= decrypt(raw,ebyte);
+SPEC,HYD Page 33
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+String decryptedMessage = new String(dbyte);
+System.out.println("Decrypted message "+decryptedMessage);
+JOptionPane.showMessageDialog(null,"Decrypted Data "+"\n"+decryptedMessage);
+}
+catch(Exception e) {
+System.out.println(e);
+}
+}
+void generateSymmetricKey() {
+try {
+Random r = new Random();
+int num = r.nextInt(10000);
+String knum = String.valueOf(num);
+byte[] knumb = knum.getBytes();
+skey=getRawKey(knumb);
+skeyString = new String(skey);
+System.out.println("Blowfish Symmetric key = "+skeyString);
+}
+catch(Exception e) {
+System.out.println(e);
+}
+}
+private static byte[] getRawKey(byte[] seed) throws Exception {
+SPEC,HYD Page 34
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+KeyGenerator kgen = KeyGenerator.getInstance("Blowfish");
+SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+sr.setSeed(seed);
+kgen.init(56, sr);
+SecretKey skey = kgen.generateKey();
+raw = skey.getEncoded();
+return raw;
+}
+private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
+SecretKeySpec skeySpec = new SecretKeySpec(raw, "Blowfish");
+Cipher cipher = Cipher.getInstance("Blowfish");
+cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+byte[] encrypted = cipher.doFinal(clear);
+return encrypted;
+}
+private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
+SecretKeySpec skeySpec = new SecretKeySpec(raw, "Blowfish");
+Cipher cipher = Cipher.getInstance("Blowfish");
+cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+byte[] decrypted = cipher.doFinal(encrypted);
+return decrypted;
+}
+public static void main(String args[]) {
+SPEC,HYD Page 35
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+Blowfish Blowfish = new Blowfish();
+}
+}
+OUTPUT:
+SPEC,HYD Page 36
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+DES Symmetric key = ��y��n��
+Encrypted message 4bv��hv�m!O���
+Decrypted message hello world
+6. Program to implement Rijndael algorithm logic
+AIM: Write a C/JAVA program to implement the Rijndael algorithm logic.
+PROGRAM:
+import java.security.MessageDigest;
+import java.util.Arrays;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+SPEC,HYD Page 37
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+public class AES {
+ static String IV = "AAAAAAAAAAAAAAAA";
+ static String plaintext = "test text 123\0\0\0"; /*Note null padding*/
+ static String encryptionKey = "0123456789abcdef";
+ public static void main(String [] args) {
+ try {
+
+ System.out.println("==Java==");
+ System.out.println("plain: " + plaintext);
+ byte[] cipher = encrypt(plaintext, encryptionKey);
+ System.out.print("cipher: ");
+ for (int i=0; i<cipher.length; i++)
+ System.out.print(new Integer(cipher[i])+" ");
+ System.out.println("");
+ String decrypted = decrypt(cipher, encryptionKey);
+ System.out.println("decrypt: " + decrypted);
+ } catch (Exception e) {
+ e.printStackTrace();
+ }
+ }
+SPEC,HYD Page 38
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+ public static byte[] encrypt(String plainText, String encryptionKey) throws Exception {
+ Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
+ SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
+ cipher.init(Cipher.ENCRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF8")));
+ return cipher.doFinal(plainText.getBytes("UTF-8"));
+ }
+ public static String decrypt(byte[] cipherText, String encryptionKey) throws Exception{
+ Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
+ SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
+ cipher.init(Cipher.DECRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF8")));
+ return new String(cipher.doFinal(cipherText),"UTF-8");
+ }
+}
+OUTPUT:
+==Java==
+plain:test text 123
+cipher:16 -124 41 -83 -16 -123 61 -64 -15 -74 87 28 63 30 64 78
+decrypt:test text 123
+SPEC,HYD Page 39
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+7. Encrypt a string using BlowFish algorithm
+AIM: Using Java Cryptography, encrypt the text “Hello world” using BlowFish.
+Create your own key using Java keytool.
+PROGRAM:
+import javax.crypto.Cipher;
+ import javax.crypto.KeyGenerator;
+ import javax.crypto.SecretKey;
+ import javax.swing.JOptionPane;
+public class BlowFishCipher {
+public static void main(String[] args) throws Exception {
+// create a key generator based upon the Blowfish cipher KeyGeneratorkeygenerator =
+KeyGenerator.getInstance("Blowfish");
+// create a key
+// create a cipher based upon Blowfish Cipher cipher = Cipher.getInstance("Blowfish");
+// initialise cipher to with secret key cipher.init(Cipher.ENCRYPT_MODE, secretkey);
+// get the text to encrypt
+String inputText = JOptionPane.showInputDialog("Input your message: "); // encrypt
+message
+byte[] encrypted = cipher.doFinal(inputText.getBytes());
+// re-initialise the cipher to be in decrypt mode cipher.init(Cipher.DECRYPT_MODE,
+secretkey);
+// decrypt message
+byte[] decrypted = cipher.doFinal(encrypted);
+// and display the results
+SPEC,HYD Page 40
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "\nEncrypted text: " + new
+String(encrypted) + "\n" + "\nDecrypted text: " + new String(decrypted));
+System.exit(0);
+} }
+OUTPUT:
+Input your message: Hello world
+Encrypted text: 3ooo&&(*&*4r4
+Decrypted text: Hello world
