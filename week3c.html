@@ -1,0 +1,101 @@
+c) Hill Cipher PROGRAM:
+import java.io.*;<br>
+import java.util.*;<br>
+//import java.io.*;<br>
+public class Hillcipher {<br>
+static float[][] decrypt = new float[3][1];<br>
+static float[][] a = new float[3][3];<br>
+ static float[][] b = new float[3][3];<br>
+static float[][] mes = new float[3][1];<br>
+ static float[][] res = new float[3][1];<br>
+static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));<br>
+static Scanner sc = new Scanner(System.in);<br>
+public static void main(String[] args) throws IOException {
+getkeymes();<br>
+for(int i=0;i<3;i++)<br>
+for(int j=0;j<1;j++)<br>
+for(int k=0;k<3;k++)<br>
+{<br>
+res[i][j]=res[i][j]+a[i][k]*mes[k][j];<br>
+ }<br>
+System.out.print("\nEncrypted string is :");<br>
+for(int i=0;i<3;i++)<br>
+{<br>
+System.out.print((char)(res[i][0]%26+97));<br>
+}<br>
+inverse();<br>
+for(int i=0;i<3;i++)<br>
+for(int j=0;j<1;j++)<br>
+for(int k=0;k<3;k++)<br>
+{<br>
+decrypt[i][j] = decrypt[i][j]+b[i][k]*res[k][j];<br>
+ }<br>
+System.out.print("\nDecrypted string is : ");<br>
+for(int i=0;i<3;i++)<br>
+{<br>
+System.out.print((char)(decrypt[i][0]%26+97));<br>
+}<br>
+System.out.print("\n");<br>
+}<br>
+public static void getkeymes() throws IOException<br>
+{<br>
+System.out.println("Enter 3x3 matrix for key (It should be inversible): ");<br>
+for(int i=0;i<3;i++)<br>
+for(int j=0;j<3;j++)<br>
+a[i][j] = sc.nextFloat();<br>
+System.out.print("\nEnter a 3 letter string: ");<br>
+String msg = br.readLine();<br>
+for(int i=0;i<3;i++)<br>
+mes[i][0] = msg.charAt(i)-97;<br>
+}<br>
+public static void inverse() {<br>
+float p,q;<br>
+float[][] c = a;<br>
+for(int i=0;i<3;i++)<br>
+for(int j=0;j<3;j++) {<br>
+//a[i][j]=sc.nextFloat();<br>
+if(i==j)<br>
+b[i][j]=1;<br>
+else b[i][j]=0;<br>
+}<br>
+for(int k=0;k<3;k++) {<br>
+for(int i=0;i<3;i++) {<br>
+p = c[i][k];<br>
+q = c[k][k];<br>
+for(int j=0;j<3;j++) {<br>
+if(i!=k)<br>
+ {
+c[i][j] = c[i][j]*q-p*c[k][j];<br>
+b[i][j] = b[i][j]*q-p*b[k][j];<br>
+}<br>
+}<br>
+}<br>
+}<br>
+for(int i=0;i<3;i++)<br>
+for(int j=0;j<3;j++)<br>
+{<br>
+b[i][j] = b[i][j]/c[i][i];<br>
+}<br>
+System.out.println("");<br>
+System.out.println("\nInverse Matrix is : ");<br>
+for(int i=0;i<3;i++)<br>
+{<br>
+for(int j=0;j<3;j++)<br>
+System.out.print(b[i][j] + " ");<br>
+System.out.print("\n");<br>
+}<br>
+}<br>
+ }<br>
+Output:<br>
+Enter 3x3 matrix for key (It should be inversible):<br>
+6 4 5<br>
+8 9 3<br>
+5 4 2<br>
+Enter a 3 letter string: hai<br>
+Encrypted string is :ecz<br>
+Inverse Matrix is :<br>
+-0.18181819 -0.36363637 1.0<br>
+0.030303031 0.3939394 -0.6666667<br>
+0.3939394 0.121212125 -0.6666667<br>
+Decrypted string is : hai<br>
+Decrypted string is: hai<br>

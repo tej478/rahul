@@ -1,0 +1,80 @@
+
+import javax.swing.*;<br>
+import java.security.SecureRandom;<br>
+import javax.crypto.Cipher;<br>
+import javax.crypto.KeyGenerator;<br>
+import javax.crypto.SecretKey;<br>
+import javax.crypto.spec.SecretKeySpec;<br>
+import java.util.Random ;<br>
+class DES {<br>
+SPEC,HYD Page 28
+CRYPTOGRAPHY AND NETWORK SECURITY LAB
+Department of CSE
+byte[] skey = new byte[1000];<br>
+String skeyString;<br>
+static byte[] raw;<br>
+String inputMessage,encryptedData,decryptedMessage;<br>
+public DES() {<br>
+try {<br>
+generateSymmetricKey();<br>
+inputMessage=JOptionPane.showInputDialog(null,"Enter message to encrypt");<br>
+byte[] ibyte = inputMessage.getBytes();<br>
+byte[] ebyte=encrypt(raw, ibyte);<br>
+String encryptedData = new String(ebyte);<br>
+System.out.println("Encrypted message "+encryptedData);<br>
+JOptionPane.showMessageDialog(null,"Encrypted Data "+"\n"+encryptedData);<br>
+byte[] dbyte= decrypt(raw,ebyte);<br>
+String decryptedMessage = new String(dbyte);<br>
+System.out.println("Decrypted message "+decryptedMessage);<br>
+JOptionPane.showMessageDialog(null,"Decrypted Data "+"\n"+decryptedMessage);<br>
+}<br>
+catch(Exception e) {<br>
+System.out.println(e);<br>
+}<br>
+}<br>
+void generateSymmetricKey() {<br>
+try {<br>
+Random r = new Random();<br>
+int num = r.nextInt(10000);<br>
+String knum = String.valueOf(num);<br>
+byte[] knumb = knum.getBytes();<br>
+skey=getRawKey(knumb);<br>
+skeyString = new String(skey);<br>
+System.out.println("DES Symmetric key = "+skeyString);<br>
+}<br>
+catch(Exception e) {<br>
+System.out.println(e);<br>
+}<br>
+}<br>
+private static byte[] getRawKey(byte[] seed) throws Exception {<br>
+KeyGenerator kgen = KeyGenerator.getInstance("DES");<br>
+SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");<br>
+sr.setSeed(seed);<br>
+kgen.init(56, sr);<br>
+SecretKey skey = kgen.generateKey();<br>
+raw = skey.getEncoded();<br>
+return raw;<br>
+}<br>
+private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {<br>
+SecretKeySpec skeySpec = new SecretKeySpec(raw, "DES");<br>
+Cipher cipher = Cipher.getInstance("DES");<br>
+cipher.init(Cipher.ENCRYPT_MODE, skeySpec);<br>
+byte[] encrypted = cipher.doFinal(clear);<br>
+return encrypted;<br>
+}<br>
+private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {<br>
+SecretKeySpec skeySpec = new SecretKeySpec(raw, "DES");<br>
+Cipher cipher = Cipher.getInstance("DES");<br>
+cipher.init(Cipher.DECRYPT_MODE, skeySpec);<br>
+byte[] decrypted = cipher.doFinal(encrypted);<br>
+return decrypted;<br>
+}<br>
+public static void main(String args[]) {<br>
+DES des = new DES();<br>
+}<br>
+}<br>
+
+output:<br>
+DES Symmetric key = ,��7p�=�<br>
+Encrypted message ,��Vq��R�.��<br>
+Decrypted message hello world<br>
